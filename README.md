@@ -21,6 +21,56 @@ Install the following plugins:
 8. Docker API
 9. docker-build-step
 
+Goto Jenkins Manage -> Script -> Run on console 
+
+```bash
+// jenkins manage -> script -> run on console 
+import jenkins.model.*
+import hudson.PluginManager
+import hudson.model.UpdateCenter
+
+def plugins = [
+    "nodejs",
+  	"adoptopenjdk",
+    "sonar",
+    "sonar-quality-gates",
+    "quality-gates",
+    "dependency-check-jenkins-plugin",
+    "docker-plugin",
+    "docker-commons",
+    "docker-workflow",
+    "docker-java-api",
+    "docker-build-step",
+    "docker-compose-build-step",
+    "cloudbees-credentials",
+    "aws-credentials",
+    "pipeline-aws"
+]
+
+def instance = Jenkins.instance
+def pm = instance.pluginManager
+def uc = instance.updateCenter
+
+plugins.each { plugin ->
+    if (!pm.getPlugin(plugin)) {
+        def updateSite = uc.getSites().first()
+        def pluginInfo = updateSite.getPlugin(plugin)
+        if (pluginInfo) {
+            def installFuture = pluginInfo.deploy()
+            installFuture.get()
+            println "Installed plugin: ${plugin}"
+        } else {
+            println "Plugin not found in update center: ${plugin}"
+        }
+    } else {
+        println "Plugin already installed: ${plugin}"
+    }
+}
+
+instance.save()
+println "Plugins installation completed. A Jenkins restart is recommended."
+jenkins.reload()
+```
 ## Step 3: Set up SonarQube
 
 For the SonarQube Configuration, first access the Sonarqube Dashboard using the url http://elastic_ip:9000
