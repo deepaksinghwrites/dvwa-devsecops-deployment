@@ -282,15 +282,20 @@ kubectl get svc argocd-server -n argocd -o json
 ```
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
-
+7. Create namespace for the app
+```bash
+k create ns dvwa-app
+```
 ## Step 10: Create app in ArgoCD
+```bash
 Application Name --- dvwa-app
 Project Name --- default
 Sync Policy  --- Replace 
 Repository URL --- https://github.com/deepaksinghwrites/dvwa-devsecops-deployment.git
 Path --- argocd-deployment
 Cluster URL --- https://kubernetes.default.svc
-Namespace --- dvwa-app 
+Namespace --- dvwa-app
+```
 
 
 
