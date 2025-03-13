@@ -26,12 +26,12 @@ Install the following plugins:
 For the SonarQube Configuration, first access the Sonarqube Dashboard using the url http://elastic_ip:9000
 
 1. Create the token 
-Administration -> Security -> Users -> Create a token 
+Administration -> Security -> Users -> Create a token. Give name to the token - dvwa
 
 2. Add this token as a credential in Jenkins 
 
 3. Go to Manage Jenkins -> System -> SonarQube installation 
-Add URL of SonarQube and for the credential select the one added in step 2.
+Give name to installation - sonar-sever. Add URL of SonarQube and for the credential select the one added in step 2. 
 
 4. Go to Manage Jenkins -> Tools -> SonarQube Scanner Installations
 -> Install automatically.
