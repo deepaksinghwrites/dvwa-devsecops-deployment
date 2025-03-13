@@ -1,1 +1,1 @@
-# juiceshop-devsecops-deployment
+# dvwa-devsecops-deployment
