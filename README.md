@@ -208,6 +208,19 @@ helm repo add stable https://charts.helm.sh/stable
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 ```
 
+# auto complete the commands 
+```bash
+vi ~/.bashrc
+```
+```bash
+    source <(kubectl completion bash)
+    alias k=kubectl
+    complete -o default -F __start_kubectl k
+```
+```bash
+source ~/.bashrc
+```
+
 3. Create Prometheus namespace
 
 ```bash
