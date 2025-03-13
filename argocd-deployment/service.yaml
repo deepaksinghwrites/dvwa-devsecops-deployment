@@ -1,64 +1,26 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: dvwa
+  name: db-service
 spec:
-  replicas: 1
   selector:
-    matchLabels:
-      app: dvwa
-  template:
-    metadata:
-      labels:
-        app: dvwa
-    spec:
-      containers:
-        - name: dvwa
-          image: deepaksinghwrites/vuln-dvwa:latest
-          ports:
-            - containerPort: 80
-          env:
-            - name: DB_SERVER
-              value: "db-service"
-            - name: MYSQL_DATABASE
-              value: "dvwa"
-            - name: MYSQL_USER
-              value: "dvwa"
-            - name: MYSQL_PASSWORD
-              value: "p@ssw0rd"
+    app: db
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: ClusterIP
 
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: db
+  name: dvwa-service
 spec:
-  replicas: 1
   selector:
-    matchLabels:
-      app: db
-  template:
-    metadata:
-      labels:
-        app: db
-    spec:
-      containers:
-        - name: mariadb
-          image: mariadb:10
-          env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: "dvwa"
-            - name: MYSQL_DATABASE
-              value: "dvwa"
-            - name: MYSQL_USER
-              value: "dvwa"
-            - name: MYSQL_PASSWORD
-              value: "p@ssw0rd"
-          ports:
-            - containerPort: 3306
-          volumeMounts:
-            - name: db-data
-              mountPath: /var/lib/mysql
-      volumes:
-        - name: db-data
-          emptyDir: {}
+    app: dvwa
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
