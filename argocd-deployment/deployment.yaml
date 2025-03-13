@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: dvwa
-          image: deepaksinghwrites/vuln-dvwa:latest
+          image: deepaksinghwrites/dvwa:latest
           ports:
             - containerPort: 80
           env:
