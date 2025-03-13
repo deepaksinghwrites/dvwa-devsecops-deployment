@@ -1,15 +1,64 @@
-apiVersion: v1
-kind: Service
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: juiceshop-app
-  labels:
-    app: juiceshop-app
+  name: dvwa
 spec:
-  ports:
-  - name: http
-    port: 3000
-    protocol: TCP
-    targetPort: 3000
+  replicas: 1
   selector:
-    app: juiceshop-app
-  type: LoadBalancer
+    matchLabels:
+      app: dvwa
+  template:
+    metadata:
+      labels:
+        app: dvwa
+    spec:
+      containers:
+        - name: dvwa
+          image: deepaksinghwrites/vuln-dvwa:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: DB_SERVER
+              value: "db-service"
+            - name: MYSQL_DATABASE
+              value: "dvwa"
+            - name: MYSQL_USER
+              value: "dvwa"
+            - name: MYSQL_PASSWORD
+              value: "p@ssw0rd"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb:10
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "dvwa"
+            - name: MYSQL_DATABASE
+              value: "dvwa"
+            - name: MYSQL_USER
+              value: "dvwa"
+            - name: MYSQL_PASSWORD
+              value: "p@ssw0rd"
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: db-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: db-data
+          emptyDir: {}
