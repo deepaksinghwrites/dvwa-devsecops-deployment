@@ -181,6 +181,13 @@ pipeline {
 
 Prerequisite: Install kubectl and helm before executing the commands below 
 
+## Step 7.1: Create an IAM user and create access key and secret key 
+ssh into the cicd server 
+```bash
+aws configure
+```
+
+
 ## Step 8: Deploy Prometheus and Grafana on EKS 
 
 In order to access the cluster use the command below:
