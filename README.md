@@ -67,21 +67,22 @@ pipeline {
         }
         stage('Checkout from Git') {
             steps {
-                git branch: 'main', url: 'https://github.com/gauri17-pro/nextflix.git'
+                git branch: 'master', url: 'https://github.com/deepaksinghwrites/DVWA.git'
             }
         }
         stage("Sonarqube Analysis") {
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Netflix \
-                    -Dsonar.projectKey=Netflix'''
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=dvwa \
+                    -Dsonar.projectKey=dvwa'''
                 }
             }
         }
         stage('OWASP FS SCAN') {
             steps {
-                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'OWASP DP-Check'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+                echo "nothing to do here"
+                // dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'OWASP DP-Check'
+                // dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
             }
         }
         stage('TRIVY FS SCAN') {
@@ -97,13 +98,17 @@ pipeline {
         }
         stage("Docker Build Image"){
             steps{
-                   
-                sh "docker build --build-arg API_KEY=2af0904de8242d48e8527eeedc3e19d9 -t netflix ."
+                
+                sh "docker version"
+                sh "docker-compose version"
+                sh "docker-compose build --no-cache"
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image netflix > trivyimage.txt"
+                sh "docker images | grep dvwa"
+                sh "trivy image --scanners vuln deepaksinghwrites/dvwa:latest"
+                // Trivy may be defaulting to scanning the local filesystem instead of the Docker daemon. To explicitly use Docker mode use --scanners
                 script{
                     input(message: "Are you sure to proceed?", ok: "Proceed")
                 }
@@ -113,8 +118,7 @@ pipeline {
             steps{
                 script {
                     withDockerRegistry(credentialsId: 'docker-cred', toolName: 'docker'){   
-                    sh "docker tag netflix gauris17/netflix:latest "
-                    sh "docker push gauris17/netflix:latest"
+                    sh "docker push deepaksinghwrites/dvwa:latest"
                     }
                 }
             }
