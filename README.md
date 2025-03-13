@@ -193,9 +193,22 @@ aws configure
 In order to access the cluster use the command below:
 
 ```
-aws eks update-kubeconfig --name "Cluster-Name" --region "Region-of-operation"
+aws eks update-kubeconfig --name dvwa-cluster --region us-east-1
 ```
 
+to make kubectl auto complete the commands 
+
+```bash
+vi ~/.bashrc
+```
+```bash
+source <(kubectl completion bash)
+alias k=kubectl
+complete -o default -F __start_kubectl k
+```
+```bash
+source ~/.bashrc
+```
 1. We need to add the Helm Stable Charts for your local.
 
 ```bash
@@ -208,18 +221,6 @@ helm repo add stable https://charts.helm.sh/stable
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 ```
 
-# auto complete the commands 
-```bash
-vi ~/.bashrc
-```
-```bash
-source <(kubectl completion bash)
-alias k=kubectl
-complete -o default -F __start_kubectl k
-```
-```bash
-source ~/.bashrc
-```
 
 3. Create Prometheus namespace
 
@@ -238,11 +239,19 @@ helm install stable prometheus-community/kube-prometheus-stack -n prometheus
 ```
 kubectl edit svc stable-kube-prometheus-sta-prometheus -n prometheus
 ```
+replace ClusterIP with 
+```bash
+LoadBalancer
+```
 
 6. Edit the grafana service too to change it to LoadBalancer
 
 ```
 kubectl edit svc stable-grafana -n prometheus
+```
+replace ClusterIP with 
+```bash
+LoadBalancer
 ```
 
 ## Step 9: Deploy ArgoCD on EKS to fetch the manifest files to the cluster
@@ -274,6 +283,14 @@ kubectl get svc argocd-server -n argocd -o json
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
 
+## Step 10: Create app in ArgoCD
+Application Name --- dvwa-app
+Project Name --- default
+Sync Policy  --- Replace 
+Repository URL --- https://github.com/deepaksinghwrites/dvwa-devsecops-deployment.git
+Path --- argocd-deployment
+Cluster URL --- https://kubernetes.default.svc
+Namespace --- dvwa-app 
 
 
 
