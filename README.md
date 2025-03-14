@@ -297,8 +297,20 @@ Cluster URL --- https://kubernetes.default.svc
 Namespace --- dvwa-app
 ```
 
+## Step 11: Access the app 
 
+```bash
+k get svc -n dvwa-app
+```
+look for dvwa-service use EXTERNAL-IP and port 80
 
+```bash
+user : admin
+password : password 
+```
+reset the database 
+
+chose option ```bash DVWA Security ``` and set it to ```bash low ``` and ```bash submit```
 
 
 
