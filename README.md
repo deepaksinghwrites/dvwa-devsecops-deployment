@@ -368,6 +368,30 @@ XSS Reflected
 </script>
 ```
 
+## Step 12: Destroy infrastructure  
+
+destroy the k8s first 
+
+```bash
+cd eks-simple
+terrafrom destroy
+```
+
+delete the cicd server 
+
+lot of service get exposed as load balancers so they have to be deleted first before runing terraform destroy 
+
+```find the vpc id```
+
+``` bash
+aws elbv2 describe-load-balancers --query "LoadBalancers[?VpcId== <which vpc id> ].[LoadBalancerName, LoadBalancerArn]" --output table
+aws elb delete-load-balancer --load-balancer-name <LB_NAME>
+```
+
+```bash
+cd cicd-ec2-server
+terraform apply --var-file variables.tfvars
+```
 
 
 
