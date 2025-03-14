@@ -345,16 +345,16 @@ First name:
 Surname: gordonb:21232f297a57a5a743894a0e4a801fc3
 ```
 
-```bash
+```
 Uses crackstation to crack password
 
-```
 Put in hashed password in https://crackstation.net/ 
+
 And then use the Surname from the output and  cracked password
 ```
 
 ```
-CSRF 
+CSRF
 https://medium.com/@preranakhanal42/csrf-dvwa-walkthrough-106b318c7b1f
 ```
 
